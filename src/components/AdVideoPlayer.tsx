@@ -232,7 +232,7 @@ export const AdVideoPlayer: React.FC<AdVideoPlayerProps> = ({ campaign }) => {
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#c59b27]/40">
             <Flame className="w-3.5 h-3.5 text-[#dfb743] animate-pulse" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-gold-gradient">
-              ROYAL BITES • COMMERCIAL
+              ROYAL BITES
             </span>
           </div>
 

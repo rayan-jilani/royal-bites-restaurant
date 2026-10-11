@@ -172,3 +172,70 @@ export const RESTAURANT_ADS: AdCampaign[] = [
     ]
   }
 ];
+
+export interface SocialMediaPost {
+  id: string;
+  title: string;
+  urduTitle: string;
+  tagline: string;
+  dealPrice: string;
+  originalPrice: string;
+  badge: string;
+  image: string;
+  items: string[];
+  caption: string;
+}
+
+export const SOCIAL_POSTS: SocialMediaPost[] = [
+  {
+    id: 'post-karahi-deal',
+    title: 'The Grand Royal Karahi Deal',
+    urduTitle: 'شاہی کڑاہی فیملی ڈیل',
+    tagline: 'Bahadurabad Ka Asli Desi Zaiqa',
+    dealPrice: 'PKR 1,999',
+    originalPrice: 'PKR 2,350',
+    badge: 'WEEKEND SPECIAL • 15% OFF',
+    image: '/images/dish_chicken_karahi.jpg',
+    items: [
+      '1x Full Chicken Karahi in Pure Desi Ghee',
+      '2x Fresh Roghani Tandoor Naans',
+      '1x Mint Zeera Raita',
+      'Fresh Garden Salad'
+    ],
+    caption: `🔥 WEEKEND SPECIAL ROYAL KARAHI DEAL @ PKR 1,999 ONLY! 🔥\n\nGaram garam lohay ki karahi, khalis desi ghee ka tadka, aur taaza roghani naan! 👑\n\n🍽️ Deal Includes:\n• 1x Full Chicken Karahi\n• 2x Roghani Naans\n• 1x Mint Raita & Fresh Salad\n\n🛵 45 Minutes Mein Garma-Garm Delivery!\n📍 Location: Bahadurabad (Near Char Minar Chowrangi), Karachi\n📲 Order on WhatsApp: 0311-0003160\n🌐 Live Tracker: https://website-eta-ivory-95.vercel.app/order\n\n#RoyalBites #KarachiFood #ChickenKarahi #DesiFood #Bahadurabad #FoodDealsKarachi`
+  },
+  {
+    id: 'post-midnight-biryani',
+    title: 'Midnight Dum Biryani Mania',
+    urduTitle: 'رات کی اسپیشل دم بریانی',
+    tagline: 'Raat Ke 12 Baje Ki Bhook Ka Ilaj',
+    dealPrice: 'PKR 1,450',
+    originalPrice: 'PKR 1,900',
+    badge: 'OPEN TILL 1:30 AM',
+    image: '/images/dish_karachi_biryani.jpg',
+    items: [
+      '2x Karachi Chicken Biryani Platters',
+      '2x Crispy Shami Kababs',
+      '1x 1.5L Chilled Soft Drink',
+      'Chilled Raita & Salad'
+    ],
+    caption: `🌙 LATE NIGHT HUNGER? ROYAL BITES IS OPEN TILL 1:30 AM! 🍗\n\nKhushboo-daar Karachi dum biryani with masala aloo and chilled cold drink delivered straight to your door!\n\n✨ Midnight Biryani Deal @ PKR 1,450:\n• 2x Karachi Chicken Biryani Platters\n• 2x Crispy Shami Kababs\n• 1.5L Chilled Drink & Raita\n\n⚡ Live Daraz-Style Tracking Enabled!\n📲 Order on WhatsApp: 0311-0003160\n📍 Bahadurabad, Karachi\n\n#MidnightKarachi #KarachiBiryani #BiryaniLovers #RoyalBites #LateNightCravings`
+  },
+  {
+    id: 'post-bbq-handi-platter',
+    title: 'Smokey BBQ & Handi Dawat Platter',
+    urduTitle: 'شاہی باربی کیو اینڈ ہانڈی پلیٹر',
+    tagline: 'Live Fire & Earthen Clay Flavours',
+    dealPrice: 'PKR 2,750',
+    originalPrice: 'PKR 3,300',
+    badge: 'FAMILY DAWAT PLATTER',
+    image: '/images/dish_seekh_kebabs.jpg',
+    items: [
+      '4x Juicy Charcoal Seekh Kebabs',
+      '1x Boneless Chicken Handi',
+      '1x Charcoal Chicken Tikka',
+      '3x Fresh Tandoori Naans'
+    ],
+    caption: `👑 THE ULTIMATE SHAHI DAWAT PLATTER @ PKR 2,750! 👑\n\nKoyley ki dhuandhar khushboo aur makkhan se bhari creamy chicken handi ka royal jor!\n\n🍱 Platter Includes:\n• 4x Juicy Melt-in-Mouth Seekh Kebabs\n• 1x Earthen Clay Chicken Handi\n• 1x Charcoal Chicken Tikka\n• 3x Fresh Tandoori Naans\n\n📍 Visit Us: Bahadurabad (Near Char Minar Chowrangi), Karachi\n🛵 Home Delivery: 0311-0003160\n\n#RoyalBites #BBQNight #SeekhKebabs #ChickenHandi #KarachiEats #Bahadurabad`
+  }
+];
