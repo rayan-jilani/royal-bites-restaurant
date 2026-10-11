@@ -156,10 +156,10 @@ export const HomePage: React.FC = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               </div>
               <h3 className="font-serif-title text-3xl sm:text-4xl font-bold text-[#faf6eb]">
-                Experience Our Sizzling Ads With Sound
+                Experience Our 1-Minute Grand Commercial With Sound
               </h3>
               <p className="text-sm text-[#b8b09f]">
-                Watch two 20-second cinematic commercials powered by Brag motion architecture — featuring sizzling karahi sound effects, sub-bass drops, tabla rhythm, and Urdu voiceovers!
+                Watch our 1-minute complete restaurant brand video film & 20s ads powered by Brag motion architecture — featuring sizzling karahi sound effects, sub-bass drops, tabla rhythm, and Urdu voiceovers!
               </p>
             </div>
 
