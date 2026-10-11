@@ -8,16 +8,21 @@ import {
   Bike,
   MessageCircle,
   Tag,
-  Smartphone
+  Smartphone,
+  Share2,
+  ExternalLink,
+  Zap
 } from 'lucide-react';
 import { RESTAURANT_ADS, SOCIAL_POSTS, type AdCampaign, type SocialMediaPost } from '../data/adsData';
 import { AdVideoPlayer } from '../components/AdVideoPlayer';
+import { openBufferPublisher, getBufferToken, setBufferToken } from '../lib/bufferService';
 
 export const AdsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'videos' | 'posts'>('videos');
   const [selectedAdId, setSelectedAdId] = useState<string>(RESTAURANT_ADS[0].id);
   const [copiedScript, setCopiedScript] = useState<boolean>(false);
   const [copiedPostId, setCopiedPostId] = useState<string | null>(null);
+  const [bufferStatus, setBufferStatus] = useState<string>('');
 
   const activeCampaign: AdCampaign =
     RESTAURANT_ADS.find((ad) => ad.id === selectedAdId) || RESTAURANT_ADS[0];
@@ -51,6 +56,12 @@ Website: https://website-eta-ivory-95.vercel.app`;
     navigator.clipboard.writeText(post.caption);
     setCopiedPostId(post.id);
     setTimeout(() => setCopiedPostId(null), 3000);
+  };
+
+  const handlePublishToBuffer = (post: SocialMediaPost) => {
+    openBufferPublisher(post);
+    setBufferStatus(`Opening Buffer for "${post.title}" — Publishing to Facebook & TikTok!`);
+    setTimeout(() => setBufferStatus(''), 4500);
   };
 
   return (
@@ -250,16 +261,42 @@ Website: https://website-eta-ivory-95.vercel.app`;
         {/* SECTION 2: SOCIAL MEDIA POSTS & GRAPHICS STUDIO */}
         {activeTab === 'posts' && (
           <div className="space-y-10 animate-fadeIn">
-            <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="text-center max-w-2xl mx-auto mb-6">
               <span className="text-xs font-bold uppercase tracking-widest text-[#dfb743] block mb-1">
-                INSTAGRAM • FACEBOOK • WHATSAPP STATUS POSTS
+                INSTAGRAM • FACEBOOK • TIKTOK • WHATSAPP STATUS
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#faf6eb]">
                 Ready-to-Publish Promotional Posts
               </h2>
               <p className="text-xs sm:text-sm text-[#a29b8c] mt-1">
-                High-converting promotional deal cards. Click "Copy Caption & Hashtags" to instantly paste into Instagram or Facebook!
+                High-converting promotional deal cards. Post to Facebook & TikTok simultaneously via Buffer with 1 click!
               </p>
+            </div>
+
+            {/* Buffer Automation Info Banner */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-[#0c2438] via-[#091b1f] to-[#06180f] border border-[#00f2fe]/40 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center space-x-3.5">
+                <div className="w-12 h-12 rounded-xl bg-[#00f2fe]/20 border border-[#00f2fe]/50 flex items-center justify-center shrink-0 text-[#00f2fe]">
+                  <Zap className="w-6 h-6 fill-current" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#00f2fe] uppercase font-bold block">
+                    BUFFER MULTI-CHANNEL AUTOMATION
+                  </span>
+                  <h4 className="text-sm font-bold text-[#faf6eb]">
+                    Publish to Facebook & TikTok at the Same Time (ایک ساتھ پوسٹ کریں)
+                  </h4>
+                  <p className="text-xs text-[#a29b8c]">
+                    Click "Post to Facebook & TikTok (via Buffer)" to immediately load the caption, image, and link into Buffer and publish to both networks at once.
+                  </p>
+                </div>
+              </div>
+
+              {bufferStatus && (
+                <div className="px-3.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold animate-pulse shrink-0">
+                  {bufferStatus}
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -336,11 +373,21 @@ Website: https://website-eta-ivory-95.vercel.app`;
                         </ul>
                       </div>
 
-                      {/* Action Buttons: Copy Caption & WhatsApp Order */}
+                      {/* Action Buttons: Buffer Publish, Copy Caption & WhatsApp Order */}
                       <div className="pt-3 border-t border-[#c59b27]/20 space-y-2">
+                        {/* 1-Click Buffer Publish Button */}
+                        <button
+                          onClick={() => handlePublishToBuffer(post)}
+                          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#2c7bf6] via-[#00f2fe] to-[#2c7bf6] text-[#051108] font-black text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all flex items-center justify-center space-x-1.5 cursor-pointer shadow-[0_4px_18px_rgba(0,242,254,0.35)]"
+                          title="Post to Facebook and TikTok simultaneously via Buffer"
+                        >
+                          <Zap className="w-3.5 h-3.5 fill-current" />
+                          <span>Post to Facebook & TikTok (via Buffer)</span>
+                        </button>
+
                         <button
                           onClick={() => handleCopyPostCaption(post)}
-                          className="w-full py-2.5 rounded-xl bg-gold-gradient text-[#08110b] font-bold text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all flex items-center justify-center space-x-1.5 cursor-pointer shadow-md"
+                          className="w-full py-2 rounded-xl bg-gold-gradient text-[#08110b] font-bold text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all flex items-center justify-center space-x-1.5 cursor-pointer shadow-md"
                         >
                           {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                           <span>{isCopied ? 'Caption & Hashtags Copied!' : 'Copy Caption & Hashtags'}</span>
