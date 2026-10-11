@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Bike, Sparkles, ChefHat } from 'lucide-react';
+import { ArrowRight, Bike, Sparkles, ChefHat, Film, Volume2 } from 'lucide-react';
 import { Hero } from '../components/Hero';
 import { MenuCard } from '../components/MenuCard';
 import { WhyChooseUs } from '../components/WhyChooseUs';
@@ -139,6 +139,37 @@ export const HomePage: React.FC = () => {
                 className="px-6 py-3.5 rounded-full border border-[#c59b27]/40 text-[#faf6eb] hover:bg-[#122e1f] text-xs font-semibold uppercase tracking-wider transition-all"
               >
                 <span>Order Now</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Video Commercials Callout (Brag Architecture) */}
+      <section className="py-20 bg-[#061209] border-b border-[#c59b27]/20 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#0c2b1c] to-[#041008] border-2 border-[#dfb743]/40 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="space-y-3 text-center lg:text-left max-w-2xl">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/60 border border-[#dfb743]/40 text-gold-gradient text-xs font-bold uppercase tracking-widest">
+                <Film className="w-3.5 h-3.5 text-[#dfb743]" />
+                <span>Professional Video Commercials</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              </div>
+              <h3 className="font-serif-title text-3xl sm:text-4xl font-bold text-[#faf6eb]">
+                Experience Our Sizzling Ads With Sound
+              </h3>
+              <p className="text-sm text-[#b8b09f]">
+                Watch two 20-second cinematic commercials powered by Brag motion architecture — featuring sizzling karahi sound effects, sub-bass drops, tabla rhythm, and Urdu voiceovers!
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+              <Link
+                to="/ads"
+                className="px-8 py-4 rounded-full bg-gold-gradient text-[#08110b] font-bold text-xs uppercase tracking-wider shadow-[0_10px_25px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
+              >
+                <Volume2 className="w-4 h-4 fill-current" />
+                <span>Watch Commercials With Sound</span>
               </Link>
             </div>
           </div>

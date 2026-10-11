@@ -14,6 +14,7 @@ import { OrderPage } from './pages/OrderPage';
 import { TrackPage } from './pages/TrackPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
+import { AdsPage } from './pages/AdsPage';
 
 export const App: React.FC = () => {
   return (
@@ -42,6 +43,10 @@ export const App: React.FC = () => {
               {/* Dedicated Daraz-Style Live Tracking Page: /track */}
               <Route path="/track" element={<TrackPage />} />
               <Route path="/track-order" element={<TrackPage />} />
+
+              {/* Commercial Video Ads Studio: /ads */}
+              <Route path="/ads" element={<AdsPage />} />
+              <Route path="/commercials" element={<AdsPage />} />
 
               {/* Dedicated Contact & Table Inquiry Page: /contact */}
               <Route path="/contact" element={<ContactPage />} />
