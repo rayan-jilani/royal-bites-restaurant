@@ -10,14 +10,16 @@ import {
   Tag,
   Smartphone,
   Zap,
-  Download
+  Download,
+  Laptop
 } from 'lucide-react';
 import { RESTAURANT_ADS, SOCIAL_POSTS, type AdCampaign, type SocialMediaPost } from '../data/adsData';
 import { AdVideoPlayer } from '../components/AdVideoPlayer';
+import { WebsiteWalkthroughTour } from '../components/WebsiteWalkthroughTour';
 import { openBufferPublisher } from '../lib/bufferService';
 
 export const AdsPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'videos' | 'posts'>('videos');
+  const [activeTab, setActiveTab] = useState<'walkthrough' | 'videos' | 'posts'>('walkthrough');
   const [selectedAdId, setSelectedAdId] = useState<string>(RESTAURANT_ADS[0].id);
   const [copiedScript, setCopiedScript] = useState<boolean>(false);
   const [copiedPostId, setCopiedPostId] = useState<string | null>(null);
@@ -73,9 +75,9 @@ Website: https://website-eta-ivory-95.vercel.app`;
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-[#c59b27]/30 bg-[#0c2217]/60 mb-4"
           >
-            <Film className="w-3.5 h-3.5 text-[#dfb743]" />
+            <Laptop className="w-3.5 h-3.5 text-[#dfb743]" />
             <span className="text-xs uppercase tracking-[0.25em] text-gold-gradient font-semibold">
-              Marketing & Ads Studio (Brag Architecture)
+              Live Project Video Tour & Ads Studio
             </span>
           </motion.div>
 
@@ -85,7 +87,7 @@ Website: https://website-eta-ivory-95.vercel.app`;
             transition={{ delay: 0.1 }}
             className="font-serif-title text-3xl sm:text-5xl md:text-6xl font-bold text-[#faf6eb] mb-4"
           >
-            Commercial Ads & Posts Studio
+            Full Website & Project Tour
           </motion.h1>
 
           <motion.p
@@ -94,38 +96,57 @@ Website: https://website-eta-ivory-95.vercel.app`;
             transition={{ delay: 0.2 }}
             className="text-sm sm:text-base text-[#b8b09f]"
           >
-            20s & 60s (1-Minute Full Showcase) cinematic video commercials with real sound effects & voiceover, plus ready-to-publish social media deal posts with 1-click Download!
+            60-second step-by-step video tour of our entire restaurant website (every page, function, cart, live tracking, and admin dashboard) with real sound & voiceover!
           </motion.p>
         </div>
 
-        {/* Master Navigation: Video Ads vs Social Media Posts */}
+        {/* Master Navigation: Walkthrough vs Video Commercials vs Social Media Posts */}
         <div className="flex justify-center mb-10">
-          <div className="p-1 rounded-2xl bg-[#091f14] border border-[#c59b27]/30 flex space-x-1 shadow-xl">
+          <div className="p-1 rounded-2xl bg-[#091f14] border border-[#c59b27]/30 flex flex-wrap justify-center gap-1 shadow-xl">
+            <button
+              onClick={() => setActiveTab('walkthrough')}
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-2 ${
+                activeTab === 'walkthrough'
+                  ? 'bg-gold-gradient text-[#08110b] shadow-lg scale-105'
+                  : 'text-[#a29b8c] hover:text-white'
+              }`}
+            >
+              <Laptop className="w-4 h-4" />
+              <span>Full Website 1-Min Video (پوری ویب سائٹ کا جائزہ)</span>
+            </button>
+
             <button
               onClick={() => setActiveTab('videos')}
-              className={`px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-2 ${
                 activeTab === 'videos'
                   ? 'bg-gold-gradient text-[#08110b] shadow-lg'
                   : 'text-[#a29b8c] hover:text-white'
               }`}
             >
               <Film className="w-4 h-4" />
-              <span>Video Commercials (1-Min & 20s With Sound)</span>
+              <span>Commercial Ads (کمرشل اشتہارات)</span>
             </button>
 
             <button
               onClick={() => setActiveTab('posts')}
-              className={`px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-2 ${
                 activeTab === 'posts'
                   ? 'bg-gold-gradient text-[#08110b] shadow-lg'
                   : 'text-[#a29b8c] hover:text-white'
               }`}
             >
               <Smartphone className="w-4 h-4" />
-              <span>Social Media Posts & Deals (ڈاؤنلوڈ اور پوسٹس)</span>
+              <span>Social Media Posts & Download (ڈاؤنلوڈ پوسٹس)</span>
             </button>
           </div>
         </div>
+
+        {/* SECTION 0: FULL 1-MINUTE WEBSITE STEP-BY-STEP WALKTHROUGH */}
+        {activeTab === 'walkthrough' && (
+          <div className="space-y-10 animate-fadeIn">
+            <WebsiteWalkthroughTour />
+          </div>
+        )}
 
         {/* SECTION 1: VIDEO COMMERCIALS */}
         {activeTab === 'videos' && (
