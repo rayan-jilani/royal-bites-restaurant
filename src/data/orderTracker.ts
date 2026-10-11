@@ -80,7 +80,7 @@ const ORDERS_STORAGE_KEY = 'royal_bites_orders_v1';
 const INITIAL_DEMO_ORDERS: TrackedOrder[] = [
   {
     orderId: 'RB-786',
-    customerName: 'Rayan Arif (Live Test Order)',
+    customerName: 'Rayan Arif',
     phone: '0311 0003160',
     address: 'House 45, Street 12, Bahadurabad, Karachi',
     specialInstructions: 'Extra spicy Chicken Karahi, fresh julienned ginger, hot roghani naan',
@@ -91,11 +91,11 @@ const INITIAL_DEMO_ORDERS: TrackedOrder[] = [
     subtotal: 3750,
     deliveryFee: 150,
     total: 3900,
-    createdAt: 'Just Now',
+    createdAt: '11:15 AM',
     currentStageIndex: 1, // Cooking in Karahi & Tandoor
     riderName: 'Farhan Ali (Royal Rider)',
     riderPhone: '+92 300 4567890',
-    estimatedArrivalMinutes: 30,
+    estimatedArrivalMinutes: 25,
   },
   {
     orderId: 'RB-8520',
@@ -110,11 +110,11 @@ const INITIAL_DEMO_ORDERS: TrackedOrder[] = [
     subtotal: 2800,
     deliveryFee: 150,
     total: 2950,
-    createdAt: '10:20 AM',
-    currentStageIndex: 1, // Cooking in Karahi
+    createdAt: '10:50 AM',
+    currentStageIndex: 2, // Packed & Ready
     riderName: 'Tariq Mehmood',
     riderPhone: '+92 321 8899001',
-    estimatedArrivalMinutes: 25,
+    estimatedArrivalMinutes: 18,
   },
   {
     orderId: 'RB-4190',
@@ -129,11 +129,48 @@ const INITIAL_DEMO_ORDERS: TrackedOrder[] = [
     subtotal: 3730,
     deliveryFee: 150,
     total: 3880,
-    createdAt: '09:45 AM',
+    createdAt: '10:15 AM',
     currentStageIndex: 3, // Out for delivery
-    riderName: 'Bilal Ahmed',
+    riderName: 'Bilal Ahmed (Royal Rider)',
     riderPhone: '+92 301 7766554',
-    estimatedArrivalMinutes: 10,
+    estimatedArrivalMinutes: 8,
+  },
+  {
+    orderId: 'RB-3312',
+    customerName: 'Zubair Sheikh',
+    phone: '0333 1122334',
+    address: 'Plot 78, CP Berar Society, Karachi',
+    specialInstructions: 'Tandoori naan hot, sealed packaging',
+    items: [
+      { name: 'Mutton Karahi', quantity: 1, unitPrice: 2850, lineTotal: 2850 },
+      { name: 'Chicken Tikka Boti', quantity: 1, unitPrice: 890, lineTotal: 890 },
+    ],
+    subtotal: 3740,
+    deliveryFee: 150,
+    total: 3890,
+    createdAt: '09:30 AM',
+    currentStageIndex: 4, // Delivered
+    riderName: 'Kamran Shah',
+    riderPhone: '+92 312 9988776',
+    estimatedArrivalMinutes: 0,
+  },
+  {
+    orderId: 'RB-9021',
+    customerName: 'Daniyal Qureshi',
+    phone: '0300 5544332',
+    address: 'B-Block, Tariq Road Commercial Area, Karachi',
+    specialInstructions: 'Call before arriving',
+    items: [
+      { name: 'Karachi Chicken Biryani', quantity: 3, unitPrice: 950, lineTotal: 2850 },
+    ],
+    subtotal: 2850,
+    deliveryFee: 150,
+    total: 3000,
+    createdAt: '11:40 AM',
+    currentStageIndex: 0, // Order Confirmed / New
+    riderName: 'Farhan Ali (Royal Rider)',
+    riderPhone: '+92 300 4567890',
+    estimatedArrivalMinutes: 35,
   },
 ];
 

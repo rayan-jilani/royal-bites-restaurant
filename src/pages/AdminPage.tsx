@@ -18,7 +18,8 @@ import {
   LogOut,
   ShieldCheck,
   Eye,
-  EyeOff
+  EyeOff,
+  Clock
 } from 'lucide-react';
 import {
   getStoredOrders,
@@ -144,7 +145,10 @@ export const AdminPage: React.FC = () => {
   const filteredOrders = filterStage === 'all'
     ? orders
     : orders.filter((o) => {
-        if (filterStage === 'active') return o.currentStageIndex < 4;
+        if (filterStage === 'received') return o.currentStageIndex === 0;
+        if (filterStage === 'cooking') return o.currentStageIndex === 1;
+        if (filterStage === 'packed') return o.currentStageIndex === 2;
+        if (filterStage === 'delivery') return o.currentStageIndex === 3;
         if (filterStage === 'delivered') return o.currentStageIndex === 4;
         return true;
       });
@@ -358,43 +362,134 @@ export const AdminPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Orders Feed Controls */}
+        {/* Quick Stage Glance Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 p-4 rounded-2xl bg-[#06160d] border border-[#c59b27]/25 shadow-md">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
+              <Flame className="w-4 h-4" />
+            </div>
+            <div className="truncate">
+              <div className="text-[11px] text-[#8e8779] font-medium">کھانا بن رہا ہے (Cooking):</div>
+              <div className="text-xs font-bold text-amber-300 truncate">
+                {orders.filter((o) => o.currentStageIndex === 1).map(o => o.customerName.split(' ')[0]).join(', ') || 'کوئی نہیں'}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
+              <PackageCheck className="w-4 h-4" />
+            </div>
+            <div className="truncate">
+              <div className="text-[11px] text-[#8e8779] font-medium">پیک ہو گیا (Packed):</div>
+              <div className="text-xs font-bold text-blue-300 truncate">
+                {orders.filter((o) => o.currentStageIndex === 2).map(o => o.customerName.split(' ')[0]).join(', ') || 'کوئی نہیں'}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/40 flex items-center justify-center text-purple-400 shrink-0">
+              <Bike className="w-4 h-4" />
+            </div>
+            <div className="truncate">
+              <div className="text-[11px] text-[#8e8779] font-medium">رائیڈر کے پاس (Out):</div>
+              <div className="text-xs font-bold text-purple-300 truncate">
+                {orders.filter((o) => o.currentStageIndex === 3).map(o => o.customerName.split(' ')[0]).join(', ') || 'کوئی نہیں'}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+            <div className="truncate">
+              <div className="text-[11px] text-[#8e8779] font-medium">ڈیلیور مکمل (Delivered):</div>
+              <div className="text-xs font-bold text-emerald-300 truncate">
+                {orders.filter((o) => o.currentStageIndex === 4).map(o => o.customerName.split(' ')[0]).join(', ') || 'کوئی نہیں'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Orders Feed Controls & Clear Category Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setFilterStage('all')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
                 filterStage === 'all'
-                  ? 'bg-gold-gradient text-[#08110b]'
-                  : 'bg-[#091f13] text-[#c2baa9] border border-[#c59b27]/20'
+                  ? 'bg-gold-gradient text-[#08110b] shadow-md'
+                  : 'bg-[#091f13] text-[#c2baa9] border border-[#c59b27]/25 hover:border-[#dfb743]'
               }`}
             >
-              All Orders ({orders.length})
+              <span>تمام آرڈرز ({orders.length})</span>
             </button>
+
             <button
-              onClick={() => setFilterStage('active')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer ${
-                filterStage === 'active'
-                  ? 'bg-gold-gradient text-[#08110b]'
-                  : 'bg-[#091f13] text-[#c2baa9] border border-[#c59b27]/20'
+              onClick={() => setFilterStage('received')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
+                filterStage === 'received'
+                  ? 'bg-sky-500 text-black shadow-md'
+                  : 'bg-[#091f13] text-sky-300 border border-sky-500/30 hover:border-sky-400'
               }`}
             >
-              Active ({activeOrders.length})
+              <Clock className="w-3.5 h-3.5" />
+              <span>نیا موصول ہوا ({orders.filter((o) => o.currentStageIndex === 0).length})</span>
             </button>
+
+            <button
+              onClick={() => setFilterStage('cooking')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
+                filterStage === 'cooking'
+                  ? 'bg-amber-500 text-black shadow-md'
+                  : 'bg-[#091f13] text-amber-300 border border-amber-500/30 hover:border-amber-400'
+              }`}
+            >
+              <Flame className="w-3.5 h-3.5" />
+              <span>کھانا بن رہا ہے ({orders.filter((o) => o.currentStageIndex === 1).length})</span>
+            </button>
+
+            <button
+              onClick={() => setFilterStage('packed')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
+                filterStage === 'packed'
+                  ? 'bg-blue-500 text-black shadow-md'
+                  : 'bg-[#091f13] text-blue-300 border border-blue-500/30 hover:border-blue-400'
+              }`}
+            >
+              <PackageCheck className="w-3.5 h-3.5" />
+              <span>پیک ہو گیا / تیار ({orders.filter((o) => o.currentStageIndex === 2).length})</span>
+            </button>
+
+            <button
+              onClick={() => setFilterStage('delivery')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
+                filterStage === 'delivery'
+                  ? 'bg-purple-500 text-white shadow-md'
+                  : 'bg-[#091f13] text-purple-300 border border-purple-500/30 hover:border-purple-400'
+              }`}
+            >
+              <Bike className="w-3.5 h-3.5" />
+              <span>رائیڈر راستے میں ہے ({orders.filter((o) => o.currentStageIndex === 3).length})</span>
+            </button>
+
             <button
               onClick={() => setFilterStage('delivered')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all flex items-center space-x-1.5 ${
                 filterStage === 'delivered'
-                  ? 'bg-gold-gradient text-[#08110b]'
-                  : 'bg-[#091f13] text-[#c2baa9] border border-[#c59b27]/20'
+                  ? 'bg-emerald-500 text-black shadow-md'
+                  : 'bg-[#091f13] text-emerald-300 border border-emerald-500/30 hover:border-emerald-400'
               }`}
             >
-              Delivered ({deliveredOrders.length})
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>ڈیلیور ہو گیا ({orders.filter((o) => o.currentStageIndex === 4).length})</span>
             </button>
           </div>
 
           <span className="text-xs text-[#a29b8c]">
-            Clicking a status below updates the customer's live tracking view instantly.
+            Status change karne par customer ko Daraz tracker par foran live dikhai deta hai.
           </span>
         </div>
 
@@ -521,6 +616,18 @@ export const AdminPage: React.FC = () => {
                     </span>
 
                     <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleStageChange(order.orderId, 0)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center space-x-1 ${
+                          order.currentStageIndex === 0
+                            ? 'bg-sky-600 text-white shadow-md'
+                            : 'bg-[#0a2014] text-[#ccc4b5] hover:bg-[#122f1f] border border-[#c59b27]/25'
+                        }`}
+                      >
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Received (نیا موصول)</span>
+                      </button>
+
                       <button
                         onClick={() => handleStageChange(order.orderId, 1)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center space-x-1 ${
