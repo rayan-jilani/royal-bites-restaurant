@@ -8,7 +8,6 @@ import {
   Phone,
   MapPin,
   Sparkles,
-  Mail,
   Save,
   Send,
   RefreshCw,
@@ -19,7 +18,9 @@ import {
   ShieldCheck,
   Eye,
   EyeOff,
-  Clock
+  Clock,
+  KeyRound,
+  Shield
 } from 'lucide-react';
 import {
   getStoredOrders,
@@ -28,23 +29,21 @@ import {
   type TrackedOrder
 } from '../data/orderTracker';
 import { formatPKR } from '../data/menuData';
-import { getOwnerGmail, setOwnerGmail, sendOrderDirectToGmail } from '../lib/automaticEmail';
+import { sendOrderDirectToGmail } from '../lib/automaticEmail';
 import { openWhatsAppWithOrder } from '../lib/whatsappService';
-
-const ADMIN_CREDENTIALS = {
-  email: 'admin@royalbites.com',
-  password: 'royalbitesadmin'
-};
+import { getOwnerCredentials, updateOwnerCredentials, verifyOwnerLogin } from '../lib/ownerAuth';
 
 export const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [loginEmail, setLoginEmail] = useState<string>('admin@royalbites.com');
+  const [loginEmail, setLoginEmail] = useState<string>('');
   const [loginPassword, setLoginPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string>('');
 
   const [orders, setOrders] = useState<TrackedOrder[]>([]);
   const [ownerGmail, setOwnerGmailState] = useState('');
+  const [ownerPasswordState, setOwnerPasswordState] = useState('');
+  const [showSettingsPassword, setShowSettingsPassword] = useState(false);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState('');
   const [testEmailStatus, setTestEmailStatus] = useState('');
   const [filterStage, setFilterStage] = useState<string>('all');
@@ -55,23 +54,24 @@ export const AdminPage: React.FC = () => {
     if (authSession === 'true') {
       setIsAuthenticated(true);
       loadOrders();
-      setOwnerGmailState(getOwnerGmail());
+      const creds = getOwnerCredentials();
+      setOwnerGmailState(creds.email);
+      setOwnerPasswordState(creds.password);
     }
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      loginEmail.trim().toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase() &&
-      loginPassword === ADMIN_CREDENTIALS.password
-    ) {
+    if (verifyOwnerLogin(loginEmail, loginPassword)) {
       setIsAuthenticated(true);
       sessionStorage.setItem('royal_bites_admin_auth', 'true');
       setLoginError('');
       loadOrders();
-      setOwnerGmailState(getOwnerGmail());
+      const creds = getOwnerCredentials();
+      setOwnerGmailState(creds.email);
+      setOwnerPasswordState(creds.password);
     } else {
-      setLoginError('Invalid Email or Password! Sirf Owner ke credentials allow hain.');
+      setLoginError('رسائی مسترد! (Access Denied) غلط ای میل یا پاس ورڈ۔ صرف ریستوراں کے اصل اونر کو اجازت ہے۔');
     }
   };
 
@@ -79,6 +79,7 @@ export const AdminPage: React.FC = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('royal_bites_admin_auth');
     setLoginPassword('');
+    setLoginEmail('');
   };
 
   const loadOrders = () => {
@@ -88,12 +89,12 @@ export const AdminPage: React.FC = () => {
     setTimeout(() => setIsRefreshing(false), 300);
   };
 
-  const handleSaveGmail = (e: React.FormEvent) => {
+  const handleSaveCredentials = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ownerGmail.trim()) return;
-    setOwnerGmail(ownerGmail);
-    setSaveSuccessMessage('Gmail address saved successfully! All new orders will go here.');
-    setTimeout(() => setSaveSuccessMessage(''), 3500);
+    if (!ownerGmail.trim() || !ownerPasswordState.trim()) return;
+    updateOwnerCredentials(ownerGmail, ownerPasswordState);
+    setSaveSuccessMessage('کامیابی! اونر کا ای میل اور پاس ورڈ اپ ڈیٹ ہو گیا ہے۔ اب صرف اسی سے لاگ ان ہوگا۔');
+    setTimeout(() => setSaveSuccessMessage(''), 4500);
   };
 
   const handleSendTestEmail = async () => {
@@ -159,20 +160,20 @@ export const AdminPage: React.FC = () => {
         <div className="w-full max-w-md p-8 rounded-3xl bg-[#081b10] border-2 border-[#dfb743]/60 shadow-[0_20px_60px_rgba(0,0,0,0.9)] space-y-6">
           <div className="text-center space-y-2">
             <div className="w-14 h-14 rounded-2xl bg-[#0d2a1b] border border-[#dfb743] flex items-center justify-center mx-auto text-[#dfb743] shadow-lg">
-              <Lock className="w-7 h-7" />
+              <Shield className="w-7 h-7" />
             </div>
             <h2 className="font-serif-title text-2xl sm:text-3xl font-bold text-[#faf6eb]">
               Owner Portal Login
             </h2>
             <p className="text-xs text-[#a29b8c]">
-              Sirf restaurant owner access ke liye password enter karein.
+              صرف ریستوراں کا تصدیق شدہ اونر اپنے ای میل اور پاس ورڈ سے داخل ہو سکتا ہے۔
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-[#dfb743] mb-1.5">
-                Admin Email (ایڈمن ای میل)
+                Owner Email (اونر ای میل)
               </label>
               <input
                 type="email"
@@ -180,13 +181,13 @@ export const AdminPage: React.FC = () => {
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl bg-[#040e07] border border-[#c59b27]/40 text-[#faf6eb] text-sm focus:outline-none focus:border-[#dfb743]"
-                placeholder="admin@royalbites.com"
+                placeholder="Apna owner Gmail enter karein..."
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-[#dfb743] mb-1.5">
-                Admin Password (پاس ورڈ)
+                Owner Password (اونر پاس ورڈ)
               </label>
               <div className="relative">
                 <input
@@ -195,7 +196,7 @@ export const AdminPage: React.FC = () => {
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-[#040e07] border border-[#c59b27]/40 text-[#faf6eb] text-sm focus:outline-none focus:border-[#dfb743] pr-10"
-                  placeholder="Enter owner password..."
+                  placeholder="Apna private password enter karein..."
                 />
                 <button
                   type="button"
@@ -222,11 +223,11 @@ export const AdminPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Test credentials helper banner */}
-          <div className="p-3.5 rounded-xl bg-[#06140b] border border-[#c59b27]/25 text-xs text-[#a29b8c] space-y-1">
-            <span className="font-bold text-[#dfb743] block">🔑 Test Owner Credentials:</span>
-            <div>Email: <code className="text-emerald-400 font-mono">admin@royalbites.com</code></div>
-            <div>Password: <code className="text-emerald-400 font-mono">royalbitesadmin</code></div>
+          <div className="p-3 rounded-xl bg-[#041107] border border-[#c59b27]/15 text-center">
+            <span className="text-[11px] text-[#7d7566] flex items-center justify-center space-x-1">
+              <Lock className="w-3 h-3 text-[#dfb743]" />
+              <span>محفوظ اونر پورٹل — بغیر پاس ورڈ رسائی ناممکن ہے۔</span>
+            </span>
           </div>
         </div>
       </div>
@@ -274,55 +275,94 @@ export const AdminPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Top Section: Quick Gmail Dispatch Settings */}
+        {/* Top Section: Owner Security & Gmail Dispatch Settings */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#081a10] border-2 border-[#dfb743]/50 shadow-2xl mb-12">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-1 max-w-xl">
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div className="space-y-1.5 max-w-lg">
               <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#faf6eb] flex items-center space-x-2.5">
-                <Mail className="w-5 h-5 text-[#dfb743]" />
-                <span>Automatic Gmail Order Delivery</span>
+                <ShieldCheck className="w-5 h-5 text-[#dfb743]" />
+                <span>Owner Security & Login Settings</span>
               </h2>
               <p className="text-xs sm:text-sm text-[#b5ae9f]">
-                No complex signups or API keys needed. Enter your Gmail address below, and all future customer orders will be delivered straight to your inbox with full order details.
+                صرف آپ (اونر) کے پاس اس پورٹل کی رسائی ہے۔ آپ اپنا لاگ ان ای میل اور خفیہ پاس ورڈ یہاں تبدیل کر سکتے ہیں، اور اسی ای میل پر کسٹمر کے آرڈرز بھی فوری موصول ہوں گے۔
               </p>
+              <div className="flex items-center space-x-2 text-xs text-[#dfb743] pt-1">
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>آپ کا سیو کیا گیا پاس ورڈ صرف آپ کے کمپیوٹر پر محفوظ رہے گا۔</span>
+              </div>
             </div>
 
-            <div className="flex-1 max-w-lg">
-              <form onSubmit={handleSaveGmail} className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="email"
-                  required
-                  value={ownerGmail}
-                  onChange={(e) => setOwnerGmailState(e.target.value)}
-                  placeholder="e.g. your-name@gmail.com"
-                  className="flex-1 px-4 py-3 rounded-xl bg-[#040c06] border border-[#c59b27]/30 text-[#faf6eb] text-sm focus:outline-none focus:border-[#dfb743]"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-3 rounded-xl bg-gold-gradient text-[#08110b] font-bold text-xs uppercase tracking-wider hover:brightness-110 cursor-pointer flex items-center justify-center space-x-1.5 shrink-0"
-                >
-                  <Save className="w-4 h-4" />
-                  <span>Save Gmail</span>
-                </button>
+            <div className="flex-1 max-w-xl w-full">
+              <form onSubmit={handleSaveCredentials} className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#dfb743] mb-1">
+                      Owner Gmail (لاگ ان اور آرڈر ای میل)
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={ownerGmail}
+                      onChange={(e) => setOwnerGmailState(e.target.value)}
+                      placeholder="e.g. rayanarif214@gmail.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#040c06] border border-[#c59b27]/30 text-[#faf6eb] text-xs focus:outline-none focus:border-[#dfb743]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#dfb743] mb-1">
+                      New Owner Password (خفیہ پاس ورڈ)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showSettingsPassword ? 'text' : 'password'}
+                        required
+                        value={ownerPasswordState}
+                        onChange={(e) => setOwnerPasswordState(e.target.value)}
+                        placeholder="Naya secret password enter karein..."
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#040c06] border border-[#c59b27]/30 text-[#faf6eb] text-xs focus:outline-none focus:border-[#dfb743] pr-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowSettingsPassword(!showSettingsPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8777] hover:text-[#dfb743] cursor-pointer"
+                      >
+                        {showSettingsPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gold-gradient text-[#08110b] font-bold text-xs uppercase tracking-wider hover:brightness-110 cursor-pointer flex items-center justify-center space-x-1.5 shadow-md"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Save Owner Credentials (محفوظ کریں)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSendTestEmail}
+                    className="text-xs text-[#dfb743] hover:text-white transition-colors flex items-center space-x-1 cursor-pointer"
+                  >
+                    <Send className="w-3 h-3" />
+                    <span>Send Test Email to this Gmail</span>
+                  </button>
+                </div>
               </form>
 
-              <div className="flex items-center justify-between mt-2.5">
-                <button
-                  type="button"
-                  onClick={handleSendTestEmail}
-                  className="text-xs text-[#dfb743] hover:text-white transition-colors flex items-center space-x-1 cursor-pointer"
-                >
-                  <Send className="w-3 h-3" />
-                  <span>Send Test Email to this Gmail now</span>
-                </button>
-
-                {saveSuccessMessage && (
-                  <span className="text-xs text-emerald-400 font-semibold">{saveSuccessMessage}</span>
-                )}
-                {testEmailStatus && (
-                  <span className="text-xs text-amber-300 font-medium">{testEmailStatus}</span>
-                )}
-              </div>
+              {(saveSuccessMessage || testEmailStatus) && (
+                <div className="mt-3 p-2.5 rounded-xl bg-[#041208] border border-[#dfb743]/30 text-xs text-center font-medium">
+                  {saveSuccessMessage && (
+                    <span className="text-emerald-400 font-semibold">{saveSuccessMessage}</span>
+                  )}
+                  {testEmailStatus && (
+                    <span className="text-amber-300 block">{testEmailStatus}</span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
