@@ -26,8 +26,117 @@ export interface AdCampaign {
 
 export const RESTAURANT_ADS: AdCampaign[] = [
   {
+    id: 'ad-full-brand-60s',
+    title: 'Ad 1: Royal Bites Full Restaurant Experience (1 Minute)',
+    urduTitle: 'شاہی دسترخوان مکمل کمرشل — 60 سیکنڈ',
+    concept: 'Comprehensive 60-Second Cinematic Brand Film showcasing the complete Royal Bites experience: Charcoal Wok Karahi, Aromatic Dum Biryani, BBQ Smokey Grill, Royal Family Dining Ambiance, Live Order Tracking & Fast 45-Min Karachi Delivery.',
+    durationSeconds: 60,
+    themeColor: '#dfb743',
+    musicGenre: 'Sufi Fusion Beats, Tabla Rhythm, Wok Sizzle, Motorcycle Roar & Shahi Trumpet',
+    targetAudience: 'Karachi Foodies, Families, Dawat Planners, Late Night Food Lovers',
+    scriptSummary: 'A 60-second complete showcase of Royal Bites: heritage, signature dishes, royal hospitality at Bahadurabad Karachi, and instant delivery.',
+    scenes: [
+      {
+        id: 1,
+        duration: 8,
+        title: 'KHALIS DESI GHEE KA TADKA',
+        subtitle: 'Authentic Lohay Ki Karahi Sizzling with Whole Spices',
+        highlightWord: 'PURE DESI GHEE',
+        image: '/images/dish_chicken_karahi.jpg',
+        soundFx: 'sizzle',
+        narrationUrdu: 'Karachi ke shaukeenon, kya aap ne Royal Bites ki asli dhuandhar karahi ka zaiqa chakha hai?',
+        narrationEnglish: 'Welcome to Royal Bites, where generational recipes meet genuine Pakistani passion.',
+        badge: 'SCENE 1 (0-8s) • SIZZLING WOK KARAHI'
+      },
+      {
+        id: 2,
+        duration: 8,
+        title: 'ZAFRANI DUM BIRYANI KI KHUSHBOO',
+        subtitle: 'Aged Long-Grain Basmati Simmered with Tender Meat',
+        highlightWord: 'ROYAL DUM BIRYANI',
+        image: '/images/dish_karachi_biryani.jpg',
+        soundFx: 'beat_drop',
+        narrationUrdu: 'Zafrani degh ki khushboo aur Karachi ka spicy dum aloo — har daana lazawaal!',
+        narrationEnglish: 'Aromatic saffron-infused Karachi dum biryani, simmered slowly over gentle embers.',
+        badge: 'SCENE 2 (8-16s) • AROMATIC BIRYANI'
+      },
+      {
+        id: 3,
+        duration: 8,
+        title: 'KOYLEY KI SMOKEY MEHAK & BBQ',
+        subtitle: 'Charcoal Grilled Seekh Kebabs & Tender Tikka',
+        highlightWord: 'SMOKEY BBQ',
+        image: '/images/dish_seekh_kebabs.jpg',
+        soundFx: 'bass_drop',
+        narrationUrdu: 'Koyley par sikhne wale juicy seekh kebabs aur makhmali malai boti!',
+        narrationEnglish: 'Melt-in-mouth seekh kebabs and charcoal-grilled tender chicken boti.',
+        badge: 'SCENE 3 (16-24s) • CHARCOAL GRILL'
+      },
+      {
+        id: 4,
+        duration: 8,
+        title: 'MAKKHAN SE BHARPUR HANDI',
+        subtitle: 'Rich Creamy Gravy Prepared in Earthen Clay Pots',
+        highlightWord: 'CLAY POT HANDI',
+        image: '/images/dish_chicken_handi.jpg',
+        soundFx: 'sizzle',
+        narrationUrdu: 'Mitti ki handi mein bani makhan se bharpur chicken handi aur taaza tandoori naan!',
+        narrationEnglish: 'Buttery boneless chicken handi simmered gently in authentic clay pots.',
+        badge: 'SCENE 4 (24-32s) • EARTHEN HANDI'
+      },
+      {
+        id: 5,
+        duration: 8,
+        title: 'SHAHI MEHMAAN-NAWAZI',
+        subtitle: 'Bahadurabad (Near Char Minar Chowrangi), Karachi',
+        highlightWord: 'BAHADURABAD KARACHI',
+        image: '/images/signature_experience.jpg',
+        soundFx: 'chime',
+        narrationUrdu: 'Apni family aur doston ke sath tashreef layen Bahadurabad Karachi ke shahi mahaul mein!',
+        narrationEnglish: 'Experience royal Pakistani hospitality and luxurious ambiance in Bahadurabad.',
+        badge: 'SCENE 5 (32-40s) • AMBIANCE & FAMILY'
+      },
+      {
+        id: 6,
+        duration: 8,
+        title: 'DARAZ-STYLE LIVE ORDER TRACKER',
+        subtitle: 'Kitchen Cooking • Fresh Packed • On The Way With Rider',
+        highlightWord: 'LIVE TRACKING',
+        image: '/images/dish_chicken_tikka.jpg',
+        soundFx: 'beat_drop',
+        narrationUrdu: 'Ghar bethe website par Daraz ki tarah apna order live track karein!',
+        narrationEnglish: 'Track your meal live step-by-step from our tandoor to your doorstep!',
+        badge: 'SCENE 6 (40-48s) • REAL-TIME TRACKING'
+      },
+      {
+        id: 7,
+        duration: 6,
+        title: '45 MINUTES GARMA GARAM DELIVERY',
+        subtitle: 'Express Hot Doorstep Delivery Across Karachi',
+        highlightWord: 'FAST DELIVERY',
+        image: '/images/hero_feast.jpg',
+        soundFx: 'motorcycle',
+        narrationUrdu: 'Sirf 45 minutes mein piping-hot fresh khana aapki dehleez par!',
+        narrationEnglish: 'Delivered fresh and piping hot to your doorstep in just 45 minutes.',
+        badge: 'SCENE 7 (48-54s) • 45-MIN EXPRESS RIDER'
+      },
+      {
+        id: 8,
+        duration: 6,
+        title: 'ABHI CALL YA WHATSAPP KAREIN',
+        subtitle: '0311-0003160 • website-eta-ivory-95.vercel.app',
+        highlightWord: '03110003160',
+        image: '/images/story_heritage.jpg',
+        soundFx: 'chime',
+        narrationUrdu: 'Abhi order karein WhatsApp 0311-0003160 par! Royal Bites — The Royal Taste of Pakistan!',
+        narrationEnglish: 'Order now on WhatsApp: 0311-0003160. Royal Bites Karachi!',
+        badge: 'SCENE 8 (54-60s) • GRAND FINALE CTA'
+      }
+    ]
+  },
+  {
     id: 'ad-royal-feast',
-    title: 'Ad 1: The Royal Feast of Karachi',
+    title: 'Ad 2: The Royal Feast of Karachi (20s)',
     urduTitle: 'شاہی ذائقہ — بہادرآباد کراچی',
     concept: 'Cinematic Pakistani Food Sizzle Promo focusing on authentic desi ghee, sizzling iron karahi, fragrant Karachi dum biryani, and melt-in-mouth BBQ.',
     durationSeconds: 20,
@@ -100,7 +209,7 @@ export const RESTAURANT_ADS: AdCampaign[] = [
   },
   {
     id: 'ad-fast-delivery',
-    title: 'Ad 2: Midnight Cravings & 45-Min Fast Delivery',
+    title: 'Ad 3: Midnight Cravings & 45-Min Fast Delivery (20s)',
     urduTitle: 'رات کی بھوک اور 45 منٹ فاسٹ ڈیلیوری',
     concept: 'High-Energy Fast Delivery Promo highlighting instant WhatsApp ordering to 03110003160 and Daraz-style live order progress tracking.',
     durationSeconds: 20,

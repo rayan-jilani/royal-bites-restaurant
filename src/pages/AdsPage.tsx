@@ -9,7 +9,8 @@ import {
   MessageCircle,
   Tag,
   Smartphone,
-  Zap
+  Zap,
+  Download
 } from 'lucide-react';
 import { RESTAURANT_ADS, SOCIAL_POSTS, type AdCampaign, type SocialMediaPost } from '../data/adsData';
 import { AdVideoPlayer } from '../components/AdVideoPlayer';
@@ -93,7 +94,7 @@ Website: https://website-eta-ivory-95.vercel.app`;
             transition={{ delay: 0.2 }}
             className="text-sm sm:text-base text-[#b8b09f]"
           >
-            20-second cinematic video commercials with real sound effects & voiceover, plus ready-to-publish social media deal posts!
+            20s & 60s (1-Minute Full Showcase) cinematic video commercials with real sound effects & voiceover, plus ready-to-publish social media deal posts with 1-click Download!
           </motion.p>
         </div>
 
@@ -109,7 +110,7 @@ Website: https://website-eta-ivory-95.vercel.app`;
               }`}
             >
               <Film className="w-4 h-4" />
-              <span>Video Commercials (20s With Sound)</span>
+              <span>Video Commercials (1-Min & 20s With Sound)</span>
             </button>
 
             <button
@@ -121,7 +122,7 @@ Website: https://website-eta-ivory-95.vercel.app`;
               }`}
             >
               <Smartphone className="w-4 h-4" />
-              <span>Social Media Posts & Deals (سوشل میڈیا پوسٹس)</span>
+              <span>Social Media Posts & Deals (ڈاؤنلوڈ اور پوسٹس)</span>
             </button>
           </div>
         </div>
@@ -382,6 +383,18 @@ Website: https://website-eta-ivory-95.vercel.app`;
                           <Zap className="w-3.5 h-3.5 fill-current" />
                           <span>Post to Facebook & TikTok (via Buffer)</span>
                         </button>
+
+                        {/* 1-Click Download HD Image Button */}
+                        <a
+                          href={post.image}
+                          download={`${post.id}.jpg`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-[#0e2c1c] border border-[#c59b27]/60 hover:bg-[#16432b] text-[#dfb743] hover:text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center space-x-1.5 cursor-pointer shadow-md"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>Download HD Image (ڈاؤنلوڈ فوٹو)</span>
+                        </a>
 
                         <button
                           onClick={() => handleCopyPostCaption(post)}

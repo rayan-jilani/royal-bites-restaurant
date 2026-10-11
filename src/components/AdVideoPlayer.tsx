@@ -321,7 +321,10 @@ export const AdVideoPlayer: React.FC<AdVideoPlayerProps> = ({ campaign }) => {
         {/* Bottom Interactive Control Bar inside player */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/90 to-transparent z-20 space-y-3">
           {/* Scene Scrubber / Progress Bar */}
-          <div className="grid grid-cols-5 gap-1.5 w-full">
+          <div
+            className="gap-1.5 w-full grid"
+            style={{ gridTemplateColumns: `repeat(${campaign.scenes.length}, minmax(0, 1fr))` }}
+          >
             {campaign.scenes.map((sc, idx) => {
               const isPast = idx < currentSceneIdx;
               const isCur = idx === currentSceneIdx;
@@ -369,7 +372,10 @@ export const AdVideoPlayer: React.FC<AdVideoPlayerProps> = ({ campaign }) => {
               </button>
 
               <span className="text-[11px] font-mono font-medium text-[#c59b27]">
-                Scene {currentSceneIdx + 1} / {campaign.scenes.length} ({Math.round(((currentSceneIdx * 4) + (sceneProgress * 0.04)))}s / {campaign.durationSeconds}s)
+                Scene {currentSceneIdx + 1} / {campaign.scenes.length} ({Math.round(
+                  campaign.scenes.slice(0, currentSceneIdx).reduce((acc, s) => acc + s.duration, 0) +
+                  (currentScene.duration * (sceneProgress / 100))
+                )}s / {campaign.durationSeconds}s)
               </span>
             </div>
 
