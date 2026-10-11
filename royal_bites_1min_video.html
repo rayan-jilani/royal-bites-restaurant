@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Bites — 1-Minute Commercial Video Studio</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 25px rgba(223, 183, 67, 0.4); }
+      50% { box-shadow: 0 0 50px rgba(223, 183, 67, 0.9); }
+    }
+    .glow-gold { animation: pulseGlow 2.5s infinite; }
+
+    @keyframes zoomKenBurns {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08) translate(-1%, -1%); }
+      100% { transform: scale(1.15); }
+    }
+    .ken-burns {
+      animation: zoomKenBurns 7.5s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+    }
+  </style>
+</head>
+<body class="bg-[#050e07] text-[#faf6eb] p-3 sm:p-6 font-sans">
+  <div class="max-w-4xl mx-auto space-y-5">
+    
+    <!-- Top Header Banner -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#0d2a1b] border border-[#dfb743]/60 text-[#dfb743] text-xs font-bold tracking-widest uppercase shadow-md">
+        <span>🎬 60-SECOND FULL COMMERCIAL • ROYAL BITES KARACHI</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-serif font-black text-[#faf6eb] tracking-tight">
+        ROYAL BITES — 1 MINUTE CINEMA VIDEO
+      </h1>
+      <p class="text-xs sm:text-sm text-[#b8b09f]">
+        Pure website ki complete 60-second video: Audio Beats, Karahi Sizzle Sound FX, Urdu Voiceover, aur TikTok & Landscape formats!
+      </p>
+    </div>
+
+    <!-- Quick Control Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-2.5 p-3 rounded-2xl bg-[#08180f] border border-[#dfb743]/30 text-xs">
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btn-format" onclick="toggleAspect()" class="px-3 py-1.5 rounded-xl bg-[#0d291b] border border-[#dfb743]/40 text-[#dfb743] font-bold cursor-pointer hover:bg-[#123824] transition-all flex items-center space-x-1.5">
+          <span>📱 Format:</span>
+          <span id="txt-format" class="text-white">9:16 TikTok Vertical</span>
+        </button>
+
+        <button id="btn-lang" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl bg-[#0d291b] border border-[#dfb743]/40 text-[#dfb743] font-bold cursor-pointer hover:bg-[#123824] transition-all flex items-center space-x-1.5">
+          <span>🗣️ Voiceover:</span>
+          <span id="txt-lang" class="text-white">Roman Urdu (اردو)</span>
+        </button>
+
+        <button id="btn-mute" onclick="toggleMute()" class="px-3 py-1.5 rounded-xl bg-[#0d291b] border border-[#dfb743]/40 text-[#dfb743] font-bold cursor-pointer hover:bg-[#123824] transition-all flex items-center space-x-1.5">
+          <span id="txt-sound-icon">🔊</span>
+          <span id="txt-sound">Sound: ON</span>
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="btn-record" onclick="toggleRecord()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold cursor-pointer hover:brightness-110 transition-all flex items-center space-x-1 shadow-md">
+          <span id="record-dot" class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></span>
+          <span id="record-text">Record & Download Video</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Video Canvas Viewport Container -->
+    <div id="video-wrapper" class="flex justify-center items-center py-2">
+      <div id="video-box" class="relative w-full max-w-[360px] aspect-[9/16] rounded-3xl overflow-hidden border-2 border-[#dfb743] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.9)] transition-all duration-300">
+        
+        <!-- Live Image Canvas -->
+        <div class="absolute inset-0 overflow-hidden">
+          <img id="scene-img" src="https://website-eta-ivory-95.vercel.app/images/hero_feast.jpg" alt="Scene" class="w-full h-full object-cover ken-burns brightness-[0.70] contrast-[1.15]">
+        </div>
+
+        <!-- Vignette & Dark Gradients -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/70 pointer-events-none"></div>
+
+        <!-- Top Header Overlay -->
+        <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
+          <div class="flex items-center space-x-2">
+            <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-[#dfb743]/60 text-[10px] font-black text-[#dfb743] tracking-widest uppercase shadow-lg">
+              👑 ROYAL BITES
+            </span>
+          </div>
+
+          <div class="flex items-center space-x-1 px-2.5 py-1 rounded-full bg-black/80 border border-emerald-500/40 text-[10px] font-mono text-emerald-400 font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="live-timer">00:00 / 01:00</span>
+          </div>
+        </div>
+
+        <!-- Center Kinetic Typography -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20 pointer-events-none">
+          <div id="scene-badge" class="px-3.5 py-1 rounded-full bg-[#0e3120]/90 border border-[#dfb743]/70 text-[10px] uppercase tracking-widest text-[#dfb743] font-bold mb-3 shadow-lg">
+            SCENE 1 • SHAHI IBTIDA
+          </div>
+
+          <h2 id="scene-title" class="text-3xl sm:text-4xl font-serif font-black text-white uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] tracking-tight leading-tight">
+            THE ROYAL TASTE OF PAKISTAN
+          </h2>
+
+          <p id="scene-subtitle" class="text-xs sm:text-sm text-[#e8e0d1] font-medium mt-2 max-w-xs drop-shadow-md">
+            Bahadurabad, Karachi • Authentic Desi Cuisine
+          </p>
+
+          <div id="scene-highlight" class="inline-block mt-4 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#dfb743] to-[#c59b27] text-black font-black text-xs uppercase tracking-wider glow-gold shadow-xl">
+            WWW.ROYALBITES.COM
+          </div>
+        </div>
+
+        <!-- Bottom Narration & Urdu Subtitles -->
+        <div class="absolute bottom-16 left-3 right-3 z-20 pointer-events-none">
+          <div class="p-3 rounded-2xl bg-black/85 backdrop-blur-md border border-[#dfb743]/40 text-center space-y-1 shadow-2xl">
+            <div id="scene-urdu" class="text-xs sm:text-sm font-bold text-[#dfb743] drop-shadow-sm font-serif">
+              کراچی کا اصل شاہی ذائقہ — روئل بائٹس بہادرآباد!
+            </div>
+            <div id="scene-roman" class="text-[11px] text-[#faf6eb] italic drop-shadow">
+              "Karachi ka asli shahi zaiqa — Royal Bites Bahadurabad!"
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Progress Bar -->
+        <div class="absolute bottom-0 left-0 right-0 h-2 bg-black/60 z-20">
+          <div id="timeline-fill" class="h-full bg-gradient-to-r from-[#dfb743] to-amber-500 w-[0%] transition-all duration-200"></div>
+        </div>
+
+        <!-- Play / Pause Overlay Button -->
+        <div id="play-overlay" onclick="togglePlay()" class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center cursor-pointer z-30 transition-all hover:bg-black/50">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-[#dfb743] to-[#c59b27] text-black flex items-center justify-center shadow-2xl text-2xl font-black transition-transform hover:scale-105 active:scale-95">
+            ▶
+          </div>
+          <span class="mt-4 px-4 py-1.5 rounded-full bg-black/90 border border-[#dfb743]/50 text-xs font-bold uppercase tracking-widest text-[#faf6eb] shadow-xl">
+            Click to Start 1-Minute Video With Sound (ویڈیو چلائیں)
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Navigation & Scene Selector Buttons -->
+    <div class="space-y-3 p-4 rounded-2xl bg-[#07160d] border border-[#dfb743]/20">
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold text-[#dfb743] uppercase tracking-wider">Timeline Scenes (کل 8 مناظر • 60 سیکنڈز):</span>
+        <button onclick="restartVideo()" class="text-xs text-[#a29b8c] hover:text-[#dfb743] cursor-pointer">
+          ↺ Reset from Beginning
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+        <button onclick="jumpToScene(0)" id="tab-0" class="p-2 rounded-xl text-left bg-gradient-to-r from-[#dfb743] to-[#c59b27] text-black font-bold transition-all">
+          1. 👑 Shahi Ibtida (0-7s)
+        </button>
+        <button onclick="jumpToScene(1)" id="tab-1" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          2. 🔥 Live Karahi Sizzle (7-15s)
+        </button>
+        <button onclick="jumpToScene(2)" id="tab-2" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          3. 🍚 Biryani & Kebabs (15-23s)
+        </button>
+        <button onclick="jumpToScene(3)" id="tab-3" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          4. 💻 Easy Online Order (23-30s)
+        </button>
+        <button onclick="jumpToScene(4)" id="tab-4" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          5. 📲 Direct WhatsApp (30-38s)
+        </button>
+        <button onclick="jumpToScene(5)" id="tab-5" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          6. 🛵 Daraz Live Tracker (38-46s)
+        </button>
+        <button onclick="jumpToScene(6)" id="tab-6" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          7. 🔒 Owner Admin Portal (46-53s)
+        </button>
+        <button onclick="jumpToScene(7)" id="tab-7" class="p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all">
+          8. 🎉 Order Now! (53-60s)
+        </button>
+      </div>
+    </div>
+
+    <!-- TikTok Caption & Copy Box -->
+    <div class="p-4 rounded-2xl bg-[#06140b] border border-[#dfb743]/20 space-y-2">
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold text-[#dfb743] uppercase tracking-wider">TikTok & Instagram Caption (1-Click Copy):</span>
+        <button onclick="copyTikTokCaption()" id="btn-copy-cap" class="px-3 py-1 rounded-lg bg-[#0d2a1b] border border-[#dfb743]/40 text-[#dfb743] hover:text-white font-bold cursor-pointer transition-all">
+          📋 Copy Description
+        </button>
+      </div>
+      <div id="tiktok-caption-text" class="text-xs text-[#b8b09f] p-3 rounded-xl bg-black/40 border border-white/5 font-mono select-all">
+        👑 Karachi's Most Delicious Feast! Royal Bites (Bahadurabad, Karachi) 🔥 Asli Desi Ghee Chicken Karahi, Biryani, Seekh Kebabs & Fast Midnight Delivery! 🛵 Order Online with Live Daraz-Style Tracker: https://website-eta-ivory-95.vercel.app 📞 WhatsApp / Call: 0311 0003160 #RoyalBites #KarachiFood #KarachiBiryani #ChickenKarahi #Bahadurabad #PakistaniFood #DesiFood #StreetFoodPK #FoodDelivery
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio Synthesis & Video Logic Script -->
+  <script>
+    const SCENES = [
+      {
+        duration: 7.5,
+        badge: "SCENE 1 • SHAHI IBTIDA",
+        title: "THE ROYAL TASTE OF PAKISTAN",
+        subtitle: "Bahadurabad, Karachi • Authentic Desi Cuisine",
+        highlight: "ROYAL BITES RESTAURANT",
+        image: "https://website-eta-ivory-95.vercel.app/images/hero_feast.jpg",
+        urduText: "کراچی کا اصل شاہی ذائقہ — روئل بائٹس بہادرآباد!",
+        romanText: "Karachi ka asli shahi zaiqa — Royal Bites Bahadurabad!",
+        speechUrdu: "Welcome to Royal Bites, Bahadurabad Karachi. The Royal Taste of Pakistan!",
+        sfx: "fanfare"
+      },
+      {
+        duration: 7.5,
+        badge: "SCENE 2 • KHALIS DESI GHEE WOK",
+        title: "SIZZLING CHICKEN & MUTTON KARAHI",
+        subtitle: "Slow-Cooked in Iron Karahis with Fresh Ginger & Green Chillies",
+        highlight: "100% PURE DESI GHEE",
+        image: "https://website-eta-ivory-95.vercel.app/images/dish_chicken_karahi.jpg",
+        urduText: "لوہے کی کڑاہی اور خالص دیسی گھی میں پکی گرما گرم کڑاہی!",
+        romanText: "Lohey ki karahi aur khalis desi ghee mein paki garma garam karahi!",
+        speechUrdu: "Authentic iron karahi cooked in pure desi ghee with sizzling aroma!",
+        sfx: "sizzle"
+      },
+      {
+        duration: 8.0,
+        badge: "SCENE 3 • DUM BIRYANI & TANDOOR",
+        title: "KARACHI BIRYANI & SEEKH KEBABS",
+        subtitle: "Fragrant Saffron Rice & Melt-in-Mouth Charcoal Kebabs",
+        highlight: "HOT TANDOORI ROGHANI NAAN",
+        image: "https://website-eta-ivory-95.vercel.app/images/dish_karachi_biryani.jpg",
+        urduText: "خوشبودار کراچی بریانی، سیخ کباب اور تازہ روغنی نان!",
+        romanText: "Khushboodar Karachi biryani, seekh kebabs aur taza roghani naan!",
+        speechUrdu: "Fragrant Karachi biryani and succulent charcoal kebabs!",
+        sfx: "beat"
+      },
+      {
+        duration: 7.0,
+        badge: "SCENE 4 • 1-CLICK ORDERING",
+        title: "ORDER ONLINE IN 10 SECONDS",
+        subtitle: "Interactive Digital Menu • Instant Cart • No App Download",
+        highlight: "WEBSITE-ETA-IVORY-95.VERCEL.APP",
+        image: "https://website-eta-ivory-95.vercel.app/images/signature_experience.jpg",
+        urduText: "بغیر کسی ایپ کے، سیدھا ویب سائٹ سے 10 سیکنڈ میں آرڈر کریں!",
+        romanText: "Bina kisi app ke, seedha website se 10 second mein order karein!",
+        speechUrdu: "Order online in ten seconds straight from our fast mobile website!",
+        sfx: "chime"
+      },
+      {
+        duration: 8.0,
+        badge: "SCENE 5 • INSTANT WHATSAPP DISPATCH",
+        title: "WHATSAPP & GMAIL DIRECT ORDER",
+        subtitle: "Orders Delivered Straight to WhatsApp 0311 0003160",
+        highlight: "WHATSAPP: 0311 0003160",
+        image: "https://website-eta-ivory-95.vercel.app/images/dish_chicken_handi.jpg",
+        urduText: "آرڈر تصدیق ہوتے ہی واٹس ایپ اور جی میل پر فوراً رسید موصول!",
+        romanText: "Order confirm hotay hi WhatsApp aur Gmail par foran receipt pohnchti hai!",
+        speechUrdu: "Instant order dispatch directly to our WhatsApp zero three one one, zero zero zero, three one six zero!",
+        sfx: "chime"
+      },
+      {
+        duration: 8.0,
+        badge: "SCENE 6 • DARAZ-STYLE TRACKING",
+        title: "5-STAGE LIVE ORDER TRACKER",
+        subtitle: "Wok Cooking ➜ Packing ➜ Rider On The Way ➜ Delivered",
+        highlight: "REAL-TIME LIVE TRACKING (/TRACK)",
+        image: "https://website-eta-ivory-95.vercel.app/images/story_heritage.jpg",
+        urduText: "دراز کی طرح لائیو ٹریکر: کڑاہی سے گھر کی دہلیز تک نظر رکھیں!",
+        romanText: "Daraz ki tarah live tracker: karahi se ghar tak har stage dekhein!",
+        speechUrdu: "Live Daraz style five-stage order tracking from kitchen to your doorstep!",
+        sfx: "bike"
+      },
+      {
+        duration: 7.0,
+        badge: "SCENE 7 • OWNER COMMAND CENTER",
+        title: "SECURE OWNER ADMIN PORTAL",
+        subtitle: "Password-Protected Kitchen Dashboard (/admin)",
+        highlight: "100% PRIVATE & CONTROLLED",
+        image: "https://website-eta-ivory-95.vercel.app/images/dish_mutton_karahi.jpg",
+        urduText: "پاس ورڈ محفوظ ایڈمن پورٹل — کس کا کھانا بن رہا ہے خود دیکھیں!",
+        romanText: "Password protected admin portal — monitor who is cooking live!",
+        speechUrdu: "Secure password protected owner admin portal for complete kitchen control!",
+        sfx: "bass"
+      },
+      {
+        duration: 7.0,
+        badge: "SCENE 8 • ABHI ORDER KAREIN",
+        title: "ORDER YOUR ROYAL FEAST NOW!",
+        subtitle: "Bahadurabad, Karachi • Hotline / WhatsApp: 0311 0003160",
+        highlight: "WWW.ROYALBITES.COM",
+        image: "https://website-eta-ivory-95.vercel.app/images/hero_feast.jpg",
+        urduText: "آج ہی نوش فرمائیں — ویب سائٹ وزٹ کریں یا واٹس ایپ پر رابطہ کریں!",
+        romanText: "Aaj hi nosh farmayein — website visit karein ya WhatsApp karein!",
+        speechUrdu: "Experience the royal feast today! Visit our website or WhatsApp now!",
+        sfx: "fanfare"
+      }
+    ];
+
+    let currentSceneIdx = 0;
+    let isPlaying = false;
+    let isMuted = false;
+    let isVertical = true;
+    let playbackTimer = null;
+    let elapsedSeconds = 0;
+    let totalDuration = SCENES.reduce((sum, s) => sum + s.duration, 0); // ~60 seconds
+
+    // Audio Context
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSfx(type) {
+      if (isMuted) return;
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        if (type === 'fanfare') {
+          // Royal Fanfare Brass Chords
+          [220, 277.18, 329.63, 440].forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.15, now + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + 1.3);
+          });
+        } else if (type === 'sizzle') {
+          // White noise sizzle of oil and garlic
+          const bufferSize = ctx.sampleRate * 1.5;
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * 0.18;
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(2500, now);
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.005, now + 1.5);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          noise.start(now);
+        } else if (type === 'beat') {
+          // Sub bass drum drop
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.4);
+          gain.gain.setValueAtTime(0.4, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } else if (type === 'chime') {
+          // Bell Chime
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.setValueAtTime(1320, now + 0.1);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.8);
+        } else if (type === 'bike') {
+          // Rider motor engine rev
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(90, now);
+          osc.frequency.linearRampToValueAtTime(220, now + 0.4);
+          osc.frequency.linearRampToValueAtTime(110, now + 0.9);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.0);
+        } else if (type === 'bass') {
+          // Cinema trailer sub-drop
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(90, now);
+          osc.frequency.exponentialRampToValueAtTime(35, now + 0.8);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.9);
+        }
+      } catch (e) {
+        // audio context blocked
+      }
+    }
+
+    function speakNarration(text) {
+      if (isMuted) return;
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.02;
+      u.pitch = 0.95;
+      window.speechSynthesis.speak(u);
+    }
+
+    function renderScene(idx) {
+      currentSceneIdx = idx;
+      const s = SCENES[idx];
+
+      const img = document.getElementById('scene-img');
+      img.src = s.image;
+      img.className = 'w-full h-full object-cover ken-burns brightness-[0.70] contrast-[1.15]';
+
+      document.getElementById('scene-badge').innerText = s.badge;
+      document.getElementById('scene-title').innerText = s.title;
+      document.getElementById('scene-subtitle').innerText = s.subtitle;
+      document.getElementById('scene-highlight').innerText = s.highlight;
+      document.getElementById('scene-urdu').innerText = s.urduText;
+      document.getElementById('scene-roman').innerText = '"' + s.romanText + '"';
+
+      // Update Scene Tabs
+      for (let i = 0; i < SCENES.length; i++) {
+        const tab = document.getElementById('tab-' + i);
+        if (i === idx) {
+          tab.className = 'p-2 rounded-xl text-left bg-gradient-to-r from-[#dfb743] to-[#c59b27] text-black font-bold shadow-md transition-all scale-[1.02]';
+        } else {
+          tab.className = 'p-2 rounded-xl text-left bg-[#0c2317] border border-white/5 hover:border-[#dfb743]/40 text-[#ccc5b6] transition-all';
+        }
+      }
+
+      if (isPlaying) {
+        playSfx(s.sfx);
+        speakNarration(s.speechUrdu);
+      }
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      const overlay = document.getElementById('play-overlay');
+      if (isPlaying) {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        getAudioContext();
+        renderScene(currentSceneIdx);
+        startTimeline();
+      } else {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        clearInterval(playbackTimer);
+        window.speechSynthesis && window.speechSynthesis.cancel();
+      }
+    }
+
+    function startTimeline() {
+      clearInterval(playbackTimer);
+      let sceneElapsed = 0;
+
+      playbackTimer = setInterval(() => {
+        if (!isPlaying) return;
+        elapsedSeconds += 0.25;
+        sceneElapsed += 0.25;
+
+        // Progress bar percentage
+        const progress = Math.min(100, (elapsedSeconds / totalDuration) * 100);
+        document.getElementById('timeline-fill').style.width = progress + '%';
+
+        // Timer text
+        const mins = Math.floor(elapsedSeconds / 60);
+        const secs = Math.floor(elapsedSeconds % 60);
+        const formatted = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        document.getElementById('live-timer').innerText = formatted + ' / 01:00';
+
+        // Check scene transition
+        if (sceneElapsed >= SCENES[currentSceneIdx].duration) {
+          sceneElapsed = 0;
+          if (currentSceneIdx < SCENES.length - 1) {
+            currentSceneIdx++;
+            renderScene(currentSceneIdx);
+          } else {
+            // Finished full 60 seconds
+            restartVideo();
+          }
+        }
+      }, 250);
+    }
+
+    function jumpToScene(idx) {
+      currentSceneIdx = idx;
+      let cumSecs = 0;
+      for (let i = 0; i < idx; i++) {
+        cumSecs += SCENES[i].duration;
+      }
+      elapsedSeconds = cumSecs;
+      renderScene(idx);
+      if (isPlaying) {
+        startTimeline();
+      }
+    }
+
+    function restartVideo() {
+      elapsedSeconds = 0;
+      currentSceneIdx = 0;
+      document.getElementById('timeline-fill').style.width = '0%';
+      document.getElementById('live-timer').innerText = '00:00 / 01:00';
+      renderScene(0);
+      if (isPlaying) {
+        startTimeline();
+      }
+    }
+
+    function toggleAspect() {
+      isVertical = !isVertical;
+      const box = document.getElementById('video-box');
+      const txt = document.getElementById('txt-format');
+      if (isVertical) {
+        box.className = 'relative w-full max-w-[360px] aspect-[9/16] rounded-3xl overflow-hidden border-2 border-[#dfb743] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.9)] transition-all duration-300';
+        txt.innerText = '9:16 TikTok Vertical';
+      } else {
+        box.className = 'relative w-full max-w-[720px] aspect-[16/9] rounded-3xl overflow-hidden border-2 border-[#dfb743] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.9)] transition-all duration-300';
+        txt.innerText = '16:9 Landscape Video';
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      document.getElementById('txt-sound').innerText = isMuted ? 'Sound: OFF' : 'Sound: ON';
+      document.getElementById('txt-sound-icon').innerText = isMuted ? '🔇' : '🔊';
+      if (isMuted && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function toggleLanguage() {
+      // Toggle between Urdu & English
+      const txt = document.getElementById('txt-lang');
+      if (txt.innerText.includes('Urdu')) {
+        txt.innerText = 'English (Voiceover)';
+      } else {
+        txt.innerText = 'Roman Urdu (اردو)';
+      }
+    }
+
+    function copyTikTokCaption() {
+      const text = document.getElementById('tiktok-caption-text').innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btn-copy-cap');
+        btn.innerText = '✓ Copied to Clipboard!';
+        setTimeout(() => {
+          btn.innerText = '📋 Copy Description';
+        }, 3000);
+      });
+    }
+
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recordCanvas = null;
+    let recordAnimId = null;
+
+    function initRecordCanvas() {
+      if (!recordCanvas) {
+        recordCanvas = document.createElement('canvas');
+      }
+      recordCanvas.width = isVertical ? 720 : 1280;
+      recordCanvas.height = isVertical ? 1280 : 720;
+      return recordCanvas;
+    }
+
+    function drawRecordFrame(ctx, width, height) {
+      const s = SCENES[currentSceneIdx];
+      const img = document.getElementById('scene-img');
+
+      // 1. Draw image
+      if (img && img.complete && img.naturalWidth) {
+        ctx.drawImage(img, 0, 0, width, height);
+      } else {
+        ctx.fillStyle = '#050e07';
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      // 2. Dark vignette gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, 'rgba(0,0,0,0.7)');
+      grad.addColorStop(0.3, 'rgba(0,0,0,0.3)');
+      grad.addColorStop(0.7, 'rgba(0,0,0,0.3)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.85)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 3. Top Header
+      ctx.fillStyle = '#dfb743';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('👑 ROYAL BITES KARACHI', width / 2, 60);
+
+      // 4. Center Typography
+      ctx.fillStyle = '#dfb743';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText(s.badge, width / 2, height / 2 - 80);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 42px serif';
+      ctx.fillText(s.title, width / 2, height / 2 - 20);
+
+      ctx.fillStyle = '#e8e0d1';
+      ctx.font = '22px sans-serif';
+      ctx.fillText(s.subtitle, width / 2, height / 2 + 30);
+
+      ctx.fillStyle = '#dfb743';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText(s.highlight, width / 2, height / 2 + 80);
+
+      // 5. Bottom Subtitles Box
+      ctx.fillStyle = 'rgba(0,0,0,0.85)';
+      ctx.fillRect(40, height - 160, width - 80, 110);
+
+      ctx.fillStyle = '#dfb743';
+      ctx.font = 'bold 24px serif';
+      ctx.fillText(s.urduText, width / 2, height - 115);
+
+      ctx.fillStyle = '#faf6eb';
+      ctx.font = 'italic 18px sans-serif';
+      ctx.fillText('"' + s.romanText + '"', width / 2, height - 75);
+    }
+
+    function toggleRecord() {
+      const btnText = document.getElementById('record-text');
+      const dot = document.getElementById('record-dot');
+
+      if (!isRecording) {
+        try {
+          const canvas = initRecordCanvas();
+          const ctx = canvas.getContext('2d');
+          const stream = canvas.captureStream(30);
+
+          recordedChunks = [];
+          mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) recordedChunks.push(e.data);
+          };
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'royal_bites_commercial_60s.webm';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            alert('Video download ho gayi! Yeh file aapke computer ke "Downloads" folder mein save ho chuki hai.');
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          btnText.innerText = 'Stop & Save Video (.webm)';
+          dot.className = 'w-2.5 h-2.5 rounded-full bg-red-300 animate-ping';
+
+          function animLoop() {
+            if (!isRecording) return;
+            drawRecordFrame(ctx, canvas.width, canvas.height);
+            recordAnimId = requestAnimationFrame(animLoop);
+          }
+          animLoop();
+
+          if (!isPlaying) togglePlay();
+        } catch (err) {
+          alert('Recording shuru nahi ho saki: ' + err.message);
+        }
+      } else {
+        isRecording = false;
+        cancelAnimationFrame(recordAnimId);
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+        }
+        btnText.innerText = 'Record & Download Video';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-white animate-pulse';
+      }
+    }
+
+    // Initialize first scene on load
+    renderScene(0);
+  </script>
+</body>
+</html>
