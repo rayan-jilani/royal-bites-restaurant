@@ -9,13 +9,11 @@ import {
   MessageCircle,
   Tag,
   Smartphone,
-  Share2,
-  ExternalLink,
   Zap
 } from 'lucide-react';
 import { RESTAURANT_ADS, SOCIAL_POSTS, type AdCampaign, type SocialMediaPost } from '../data/adsData';
 import { AdVideoPlayer } from '../components/AdVideoPlayer';
-import { openBufferPublisher, getBufferToken, setBufferToken } from '../lib/bufferService';
+import { openBufferPublisher } from '../lib/bufferService';
 
 export const AdsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'videos' | 'posts'>('videos');
